@@ -1,17 +1,17 @@
 export TERM="xterm-256color"
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH:/home/ANT.AMAZON.COM/asaidak/.toolbox/bin
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 # Path to your oh-my-zsh installation.
 
-export ZSH="/home/asaidak/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel9k/powerlevel9k"
 #
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -71,7 +71,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(sudo git history taskwarrior zsh-autosuggestions)
+plugins=(sudo git history taskwarrior zsh-autosuggestions zsh-syntax-highlighting adb dircycle)
 autoload -U compinit && compinit
 source $ZSH/oh-my-zsh.sh
 
@@ -101,6 +101,8 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # my additions
+bindkey '^ ' autosuggest-accept
+
 alias vi=vim
 export AWS_PROFILE=arnold-dev
 export PYTHONPATH=$PYTHONPATH:~/BotoCoreAmazon
@@ -111,9 +113,9 @@ zshrc () {
 tmuxrc () {
 	vim ~/.tmux.conf
 }
-alias ab="arnold ws build"
+alias ab="arnold ws build --ccache"
 alias as="arnold ws show"
-alias abb="arnold ws build --build-only"
+alias abb="arnold ws build --ccache --build-only"
 alias asf="arnold ws set-flavour"
 alias acw="arnold ws create -vs AlexaHybridEngine"
 export PATH="/usr/local/bin:$PATH"
@@ -126,4 +128,28 @@ done
 
 export TZ='Europe/Warsaw'
 alias dus="du -sh * | sort -h"
-source /home/asaidak/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+alias amend="git commit --amend"
+alias grp="grep -rni"
+alias reboot="echo 'dont use reboot'"
+
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=( status command_execution_time)
+POWERLEVEL9K_SHORTEN_STRATEGY="truncate_to_last"
+
+alias kill="kill -9"
+alias cpm="cp -r ~/models ."
+eval "$(_ARNOLD_COMPLETE=source_zsh arnold)"
+mkdir -p $HOME/.ccache
+export ARNOLD_CCACHE_DIR=$HOME/.ccache
+zsh_arnold_flavour() {
+    arnold_pwd=$PWD
+    while [[ ! -d "$arnold_pwd/arnold-config" ]]; do
+        [[ ${arnold_pwd:A} == '/' ]] && return
+        arnold_pwd+='/..'
+    done
+#    echo -en "\U0001F366 "
+    if [ $COLUMNS -lt 60 ]; then return; fi
+    jq -r '.["flavour"]' "$arnold_pwd/arnold-config/workspace.config.json" | tr -d '\n'
+}
+
+POWERLEVEL9K_CUSTOM_ARNOLD_FLAVOUR="zsh_arnold_flavour"
