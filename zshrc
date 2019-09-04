@@ -101,7 +101,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # my additions
-bindkey '^ ' autosuggest-accept
+bindkey '^[[Z' autosuggest-accept
 
 alias vi=vim
 export AWS_PROFILE=arnold-dev
@@ -113,6 +113,7 @@ zshrc () {
 tmuxrc () {
 	vim ~/.tmux.conf
 }
+alias arnold="unison ws;\arnold"
 alias ab="arnold ws build --ccache"
 alias as="arnold ws show"
 alias abb="arnold ws build --ccache --build-only"
@@ -132,13 +133,13 @@ alias amend="git commit --amend"
 alias grp="grep -rni"
 alias reboot="echo 'dont use reboot'"
 
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=( status command_execution_time)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir custom_arnold_flavour vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time)
 POWERLEVEL9K_SHORTEN_STRATEGY="truncate_to_last"
 
 alias kill="kill -9"
 alias cpm="cp -r ~/models ."
-eval "$(_ARNOLD_COMPLETE=source_zsh arnold)"
+eval "$(_ARNOLD_COMPLETE=source_zsh \arnold)"
 mkdir -p $HOME/.ccache
 export ARNOLD_CCACHE_DIR=$HOME/.ccache
 zsh_arnold_flavour() {

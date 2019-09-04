@@ -46,3 +46,5 @@ function! Copy2new()
    tabnew
    call setline('.', alltext)
 endfunction
+
+set clipboard=unnamed
