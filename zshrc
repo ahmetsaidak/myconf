@@ -151,7 +151,7 @@ zsh_arnold_flavour() {
     arnold_pwd=${arnold_pwd:A}
     #    echo -en "\U0001F366 "
     if [ $COLUMNS -lt 60 ]; then return; fi
-    echo $(jq -r '.["flavour"]' "$arnold_pwd/arnold-config/workspace.config.json" | tr -d '\n')'@'$(basename $arnold_pwd)
+    echo $(jq -r '.["flavour"]' "$arnold_pwd/arnold-config/workspace.config.json" | tr -d '\n') '@' $(basename $arnold_pwd)
 }
 
 POWERLEVEL9K_CUSTOM_ARNOLD_FLAVOUR="zsh_arnold_flavour"
