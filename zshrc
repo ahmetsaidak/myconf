@@ -1,6 +1,6 @@
 export TERM="xterm-256color"
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH:/home/ANT.AMAZON.COM/asaidak/.toolbox/bin
+export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/.toolbox/bin:$HOME/Library/Python/3.7/bin
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 # Path to your oh-my-zsh installation.
@@ -148,9 +148,10 @@ zsh_arnold_flavour() {
         [[ ${arnold_pwd:A} == '/' ]] && return
         arnold_pwd+='/..'
     done
-#    echo -en "\U0001F366 "
+    arnold_pwd=${arnold_pwd:A}
+    #    echo -en "\U0001F366 "
     if [ $COLUMNS -lt 60 ]; then return; fi
-    jq -r '.["flavour"]' "$arnold_pwd/arnold-config/workspace.config.json" | tr -d '\n'
+    echo $(jq -r '.["flavour"]' "$arnold_pwd/arnold-config/workspace.config.json" | tr -d '\n')'@'$(basename $arnold_pwd)
 }
 
 POWERLEVEL9K_CUSTOM_ARNOLD_FLAVOUR="zsh_arnold_flavour"
